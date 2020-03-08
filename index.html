@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title> Realtime Node Js Chat App</title>
+        <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+        input {
+            border: 1px solid #ababab;
+            padding: 10px;
+            width: 87.5%;
+            float: left;
+        }
+        button {
+            width:9%;
+            background-color: burlywood;
+            border: none;
+            padding: 10px;
+            float: right;
+            height: 35px;
+        }
+        .messages {
+            list-style-type: none;
+            margin: 0;
+            padding:0;
+        }
+        .messages li{
+            padding: 5px 10px;
+        }
+        .messages li:ntch-child(odd){
+            background: #eee;
+        }
+        .messages {
+            margin-bottom: 40px;
+        }
+        .composer-area {
+            bottom: 5px;
+            position: fixed;
+            width: 100%;
+        }
+            </style>
+            <script src="http://cdn.socket.io/socket.io-1.2.0.js"></script>
+            <script src="http://code.jquery.com/jquery-1.11.1.js"></script>
+    </head>
+    <body>
+        <ul class="messages"></ul>
+        <div class="composer-area">
+            <input id="composer"/>
+            <button id="send-Button">Send</button>
+        </div>
+        <script>
+        $(function(){
+            var socket=io();
+            $('#send-button').on('click',function(){
+                sendMessage();
+            });
+            $('#composer').keypress(function(e){
+                if(e.which==13){
+                    sendMessage();
+                }
+            });
+            function sendMessage(){
+                var message=$('#composer').val().trim();
+                if(!message){
+                    return false;
+                }
+                socket.emit('message',$('composer').val());
+                $('#composer').val('').focus();
+                return false;
+            }
+        });
+            </script>
+    </body>
+</html>
